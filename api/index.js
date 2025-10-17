@@ -18,7 +18,6 @@ const corsOptions = {
   origin: [
     'http://localhost:3000', 
     'http://127.0.0.1:3000',
-    'https://crwd-jiawei.vercel.app/',
     process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
     'https://crwd-platform.vercel.app', // Replace with your actual domain
     'https://*.vercel.app'

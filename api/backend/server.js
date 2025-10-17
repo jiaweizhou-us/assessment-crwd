@@ -16,8 +16,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? [
-        'https://crwd-platform.vercel.app', // Replace with your actual Vercel URL
-        'https://your-frontend-url.vercel.app' // Add your actual frontend URL here
+        'https://assessment-crwd.onrender.com', // Replace with your actual Vercel URL
+        'https://crwd-jiawei.vercel.app' // Add your actual frontend URL here
       ]
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
