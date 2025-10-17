@@ -1,9 +1,23 @@
 {
   "version": 2,
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
-  "functions": {
-    "api/backend/server.js": {
-      "maxDuration": 300
+  "name": "crwd-platform",
+  "builds": [
+    {
+      "src": "api/backend/server.js",
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/backend/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
   }
 }

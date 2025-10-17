@@ -10,12 +10,16 @@ const payoutGuardRoutes = require('./routes/payoutGuard');
 const { users, transactions } = require('./mockData');
 
 const app = express();
-const port = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
 
-// CORS configuration
+// CORS configuration for both development and production
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], // Allow React dev server
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        'https://crwd-platform.vercel.app', // Replace with your actual Vercel URL
+        'https://your-frontend-url.vercel.app' // Add your actual frontend URL here
+      ]
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -23,9 +27,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-
-// Mount auth routes (public)
-app.use('/api/auth', authRoutes);
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Central token verification middleware used for protected endpoints
 function verifyToken(req, res, next) {
@@ -56,17 +58,22 @@ function verifyAdmin(req, res, next) {
   next();
 }
 
+// Mount auth routes (public)
+app.use('/api/auth', authRoutes);
+
 // Mount protected routes
 app.use('/api/payouts', verifyToken, payoutRoutes);
 app.use('/api/ops', verifyToken, verifyAdmin, opsRoutes);
 app.use('/api', verifyToken, payoutGuardRoutes);
 
 // Health check endpoint
-app.get('/', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     message: 'CRWD Backend API is running',
     version: '2.0.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
     endpoints: {
       auth: '/api/auth',
       payouts: '/api/payouts',
@@ -76,13 +83,37 @@ app.get('/', (req, res) => {
   });
 });
 
+// Root API endpoint
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Welcome to CRWD API',
+    version: '2.0.0',
+    documentation: 'https://github.com/your-repo/crwd-platform',
+    endpoints: {
+      auth: '/api/auth',
+      payouts: '/api/payouts',
+      operations: '/api/ops',
+      health: '/api/health'
+    }
+  });
+});
+
+// Catch-all for API routes
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'CRWD Platform API',
+    version: '2.0.0',
+    status: 'running'
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error:', err.stack);
   res.status(500).json({ 
     success: false, 
     message: 'Something went wrong!', 
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
 });
 
@@ -90,14 +121,21 @@ app.use((err, req, res, next) => {
 app.use('*', (req, res) => {
   res.status(404).json({ 
     success: false, 
-    message: 'Endpoint not found' 
+    message: 'Endpoint not found',
+    path: req.originalUrl
   });
 });
 
-app.listen(port, () => {
-  console.log(`🚀 CRWD Backend Server running on http://localhost:${port}`);
-  console.log(`📊 Admin Dashboard: http://localhost:3000/admin-dashboard`);
-  console.log(`💰 Payouts Management: http://localhost:3000/payout-list`);
-});
+// Only start server in development mode
+// In production (Vercel), this will be handled by the serverless function
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`🚀 CRWD Backend Server running on http://localhost:${port}`);
+    console.log(`📊 Admin Dashboard: http://localhost:3000/admin-dashboard`);
+    console.log(`💰 Payouts Management: http://localhost:3000/payout-list`);
+  });
+}
 
+// Export the Express app for Vercel serverless functions
 module.exports = app;
