@@ -84,7 +84,7 @@ const PayoutGuard = () => {
                 return;
             }
             
-            const response = await axios.get('http://localhost:5000/api/my-reviews', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/my-reviews`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUserReviews(response.data.data || []);
@@ -109,7 +109,7 @@ const PayoutGuard = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:5000/api/check-refund-status', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/check-refund-status`, formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -143,7 +143,7 @@ const PayoutGuard = () => {
                 return;
             }
 
-            await axios.post('http://localhost:5000/api/submit-review', newReview, {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/submit-review`, newReview, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

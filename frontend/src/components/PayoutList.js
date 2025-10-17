@@ -62,7 +62,7 @@ const PayoutList = () => {
     const fetchPendingPayouts = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/payouts/pending', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/payouts/pending`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setReviews(response.data.data || []);
@@ -76,7 +76,7 @@ const PayoutList = () => {
     const fetchStats = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/payouts/stats', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/payouts/stats`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setStats(response.data.data || {});
@@ -92,7 +92,7 @@ const PayoutList = () => {
             const payload = { review_id: reviewId };
             if (reason) payload.reason = reason;
 
-            const response = await axios.post(`http://localhost:5000/api/payouts/${endpoint}`, payload, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/payouts/${endpoint}`, payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -109,7 +109,7 @@ const PayoutList = () => {
     const handleBulkApprove = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:5000/api/payouts/bulk-approve', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/payouts/bulk-approve`, {
                 review_ids: bulkSelected
             }, {
                 headers: { Authorization: `Bearer ${token}` }

@@ -44,10 +44,10 @@ const DashboardOverview = () => {
             const token = localStorage.getItem('token');
             
             const [usersRes, reviewsRes, transactionsRes, payoutsRes] = await Promise.all([
-                fetch('http://localhost:5000/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch('http://localhost:5000/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch('http://localhost:5000/api/admin/transactions', { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch('http://localhost:5000/api/admin/payouts', { headers: { 'Authorization': `Bearer ${token}` } })
+                fetch(`${process.env.REACT_APP_API_URL}/api/admin/users`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${process.env.REACT_APP_API_URL}/api/admin/reviews`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${process.env.REACT_APP_API_URL}/api/admin/transactions`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${process.env.REACT_APP_API_URL}/api/admin/payouts`, { headers: { 'Authorization': `Bearer ${token}` } })
             ]);
 
             const [users, reviews, transactions, payouts] = await Promise.all([

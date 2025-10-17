@@ -47,7 +47,7 @@ const UserManagement = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/admin/users', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/users`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
