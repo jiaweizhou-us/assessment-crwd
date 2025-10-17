@@ -3,13 +3,6 @@
   "name": "crwd-platform",
   "builds": [
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    },
-    {
       "src": "api/backend/server.js",
       "use": "@vercel/node"
     }
@@ -18,19 +11,6 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/backend/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/build/$1"
     }
-  ],
-  "env": {
-    "JWT_SECRET": "@jwt_secret",
-    "NODE_ENV": "production"
-  },
-  "functions": {
-    "api/backend/server.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
