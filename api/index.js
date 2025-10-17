@@ -91,5 +91,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Export the Express app as a serverless function
-module.exports = app;
+// Export as a serverless function handler
+module.exports = (req, res) => {
+  return app(req, res);
+};

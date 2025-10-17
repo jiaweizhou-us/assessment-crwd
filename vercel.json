@@ -1,20 +1,19 @@
 {
   "version": 2,
-  "name": "crwd-platform",
   "builds": [
     {
-      "src": "api/backend/server.js",
+      "src": "api/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/backend/server.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/api/backend/server.js"
+      "dest": "/api/index.js"
     }
   ],
   "env": {
