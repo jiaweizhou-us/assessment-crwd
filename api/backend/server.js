@@ -99,3 +99,5 @@ app.listen(port, () => {
   console.log(`📊 Admin Dashboard: http://localhost:3000/admin-dashboard`);
   console.log(`💰 Payouts Management: http://localhost:3000/payout-list`);
 });
+
+module.exports = app;
