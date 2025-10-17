@@ -61,6 +61,7 @@ const PayoutGuard = () => {
     const [selectedTab, setSelectedTab] = useState(0);
     const [userReviews, setUserReviews] = useState([]);
     const [reviewDialog, setReviewDialog] = useState({ open: false });
+    const [reviewDetailsDialog, setReviewDetailsDialog] = useState({ open: false, review: null });
     const [newReview, setNewReview] = useState({
         product_id: '',
         product_name: '',
@@ -160,6 +161,10 @@ const PayoutGuard = () => {
             console.error('Error submitting review:', error);
             showSnackbar('Error submitting review: ' + (error.response?.data?.message || error.message), 'error');
         }
+    };
+
+    const handleViewReviewDetails = (review) => {
+        setReviewDetailsDialog({ open: true, review });
     };
 
     const showSnackbar = (message, severity) => {
@@ -311,7 +316,7 @@ const PayoutGuard = () => {
                                         <Grid item xs={12} md={6}>
                                             {result ? (
                                                 <Zoom in timeout={600}>
-                                                    <Paper sx={{ p: 3, borderRadius: 3, height: '100%' }}>
+                                                    <Paper sx={{ p: 3, borderRadius: 3, height: '100%', mt: 4 }}>
                                                         <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                                                             <Assessment sx={{ mr: 1 }} />
                                                             Status Result
@@ -402,21 +407,67 @@ const PayoutGuard = () => {
                                                 </Zoom>
                                             ) : (
                                                 <Paper sx={{ 
-                                                    p: 3, 
+                                                    p: 4, 
+                                                    mt: 4,
                                                     borderRadius: 3, 
                                                     height: '100%', 
                                                     display: 'flex', 
+                                                    flexDirection: 'column',
                                                     alignItems: 'center', 
-                                                    justifyContent: 'center',
+                                                    justifyContent: 'flex-start',
                                                     textAlign: 'center',
-                                                    backgroundColor: '#f5f5f5'
+                                                    backgroundColor: '#fafafa',
+                                                    border: '2px dashed #e0e0e0',
+                                                    minHeight: 400,
+                                                    position: 'relative',
+                                                    overflow: 'hidden',
+                                                    pt: 6,
                                                 }}>
-                                                    <Box>
-                                                        <Timeline sx={{ fontSize: 60, color: '#bdbdbd', mb: 2 }} />
-                                                        <Typography variant="h6" color="textSecondary">
-                                                            Enter your details to check payout status
+                                                    <Box sx={{ 
+                                                        position: 'relative',
+                                                        zIndex: 2,
+                                                        maxWidth: 280,
+                                                    }}>
+                                                        <Timeline sx={{ 
+                                                            fontSize: 100, 
+                                                            color: '#bdbdbd', 
+                                                            mb: 3,
+                                                            opacity: 0.8
+                                                        }} />
+                                                        <Typography variant="h5" color="textSecondary" gutterBottom fontWeight={600}>
+                                                            Results will appear here
+                                                        </Typography>
+                                                        <Typography variant="body1" color="textSecondary" sx={{ 
+                                                            lineHeight: 1.6,
+                                                            opacity: 0.8
+                                                        }}>
+                                                            Fill out the form on the left and click "Check Payout Status" to see your results
                                                         </Typography>
                                                     </Box>
+                                                    
+                                                    {/* Decorative background elements */}
+                                                    <Box sx={{
+                                                        position: 'absolute',
+                                                        top: 20,
+                                                        right: 20,
+                                                        width: 60,
+                                                        height: 60,
+                                                        borderRadius: '50%',
+                                                        background: 'linear-gradient(45deg, #e3f2fd, #bbdefb)',
+                                                        opacity: 0.3,
+                                                        zIndex: 1
+                                                    }} />
+                                                    <Box sx={{
+                                                        position: 'absolute',
+                                                        bottom: 30,
+                                                        left: 30,
+                                                        width: 40,
+                                                        height: 40,
+                                                        borderRadius: '50%',
+                                                        background: 'linear-gradient(45deg, #f3e5f5, #e1bee7)',
+                                                        opacity: 0.3,
+                                                        zIndex: 1
+                                                    }} />
                                                 </Paper>
                                             )}
                                         </Grid>
@@ -521,7 +572,10 @@ const PayoutGuard = () => {
                                                     </TableCell>
                                                     <TableCell>
                                                         <Tooltip title="View Details">
-                                                            <IconButton size="small">
+                                                            <IconButton 
+                                                                size="small"
+                                                                onClick={() => handleViewReviewDetails(review)}
+                                                            >
                                                                 <Visibility />
                                                             </IconButton>
                                                         </Tooltip>
@@ -601,6 +655,128 @@ const PayoutGuard = () => {
                             disabled={!newReview.product_id || !newReview.review_text}
                         >
                             Submit Review
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/* Review Details Dialog */}
+                <Dialog 
+                    open={reviewDetailsDialog.open} 
+                    onClose={() => setReviewDetailsDialog({ open: false, review: null })}
+                    maxWidth="md"
+                    fullWidth
+                >
+                    <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Visibility />
+                        Review Details
+                    </DialogTitle>
+                    <DialogContent>
+                        {reviewDetailsDialog.review && (
+                            <Box sx={{ mt: 2 }}>
+                                {/* Product Information */}
+                                <Paper sx={{ p: 3, mb: 3, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
+                                    <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <ShoppingCart sx={{ mr: 1 }} />
+                                        Product Information
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Product Name</Typography>
+                                            <Typography variant="body1" fontWeight="bold">
+                                                {reviewDetailsDialog.review.product_name}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Product ID</Typography>
+                                            <Typography variant="body1" fontWeight="bold">
+                                                {reviewDetailsDialog.review.product_id}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+
+                                {/* Review Content */}
+                                <Paper sx={{ p: 3, mb: 3, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
+                                    <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Star sx={{ mr: 1 }} />
+                                        Review Content
+                                    </Typography>
+                                    <Box sx={{ mb: 2 }}>
+                                        <Typography variant="body2" color="textSecondary" gutterBottom>Rating</Typography>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star 
+                                                    key={i} 
+                                                    sx={{ 
+                                                        fontSize: 24,
+                                                        color: i < reviewDetailsDialog.review.rating ? '#ffc107' : '#e0e0e0' 
+                                                    }} 
+                                                />
+                                            ))}
+                                            <Typography variant="h6" sx={{ ml: 1 }}>
+                                                {reviewDetailsDialog.review.rating}/5
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box>
+                                        <Typography variant="body2" color="textSecondary" gutterBottom>Review Text</Typography>
+                                        <Paper sx={{ p: 2, backgroundColor: 'white', border: '1px solid #e0e0e0' }}>
+                                            <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+                                                "{reviewDetailsDialog.review.review_text}"
+                                            </Typography>
+                                        </Paper>
+                                    </Box>
+                                </Paper>
+
+                                {/* Payout Information */}
+                                <Paper sx={{ p: 3, mb: 3, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
+                                    <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <AttachMoney sx={{ mr: 1 }} />
+                                        Payout Information
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Payout Status</Typography>
+                                            <Box sx={{ mt: 1 }}>
+                                                {getPayoutStatusChip(reviewDetailsDialog.review.payout_status)}
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Payout Amount</Typography>
+                                            <Typography variant="h5" color="success.main" fontWeight="bold">
+                                                ${reviewDetailsDialog.review.payout_amount?.toFixed(2)}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+
+                                {/* Submission Details */}
+                                <Paper sx={{ p: 3, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
+                                    <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <History sx={{ mr: 1 }} />
+                                        Submission Details
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Submitted Date</Typography>
+                                            <Typography variant="body1" fontWeight="bold">
+                                                {reviewDetailsDialog.review.created_at}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <Typography variant="body2" color="textSecondary">Review ID</Typography>
+                                            <Typography variant="body1" fontWeight="bold">
+                                                {reviewDetailsDialog.review.id}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+                            </Box>
+                        )}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setReviewDetailsDialog({ open: false, review: null })}>
+                            Close
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const payoutRoutes = require('./routes/payouts');
 const opsRoutes = require('./routes/ops');
 const payoutGuardRoutes = require('./routes/payoutGuard');
-const { users, transactions } = require('./mockData');
+const { users, transactions, reviews, payouts } = require('./mockData');
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
@@ -65,6 +65,38 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payouts', verifyToken, payoutRoutes);
 app.use('/api/ops', verifyToken, verifyAdmin, opsRoutes);
 app.use('/api', verifyToken, payoutGuardRoutes);
+
+// Admin endpoints - Add these BEFORE module.exports
+// Get all transactions (admin only)
+app.get('/api/admin/transactions', verifyToken, verifyAdmin, (req, res) => {
+    // Sort transactions by purchase date (newest first)
+    const sortedTransactions = transactions.sort((a, b) => 
+        new Date(b.purchase_date) - new Date(a.purchase_date)
+    );
+    
+    res.json(sortedTransactions);
+});
+
+// Get all users (admin only)
+app.get('/api/admin/users', verifyToken, verifyAdmin, (req, res) => {
+    // Remove passwords from response
+    const safeUsers = users.map(user => {
+        const { password, ...safeUser } = user;
+        return safeUser;
+    });
+    
+    res.json(safeUsers);
+});
+
+// Get all reviews (admin only)
+app.get('/api/admin/reviews', verifyToken, verifyAdmin, (req, res) => {
+    res.json(reviews);
+});
+
+// Get all payouts (admin only)
+app.get('/api/admin/payouts', verifyToken, verifyAdmin, (req, res) => {
+    res.json(payouts);
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

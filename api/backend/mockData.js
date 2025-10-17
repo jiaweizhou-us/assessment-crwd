@@ -96,46 +96,77 @@ const transactions = [
     { 
         transaction_id: 'txn123', 
         user_id: 'user1',
+        username: 'user1',
+        email: 'user1@example.com',
         product_id: 'product1', 
         product_name: 'Wireless Headphones Pro',
         refund_status: false,
         purchase_amount: 199.99,
         purchase_date: '2025-10-14',
         refund_date: null,
-        refund_amount: 0
+        refund_amount: 0,
+        payment_method: 'credit_card',
+        status: 'completed'
     },
     { 
         transaction_id: 'txn124', 
         user_id: 'user2',
+        username: 'user2',
+        email: 'user2@example.com',
         product_id: 'product2', 
         product_name: 'Smart Watch Ultra',
         refund_status: true,
         purchase_amount: 299.99,
         purchase_date: '2025-10-13',
         refund_date: '2025-10-15',
-        refund_amount: 299.99
+        refund_amount: 299.99,
+        payment_method: 'paypal',
+        status: 'refunded'
     },
     { 
         transaction_id: 'txn125', 
         user_id: 'user1',
+        username: 'user1',
+        email: 'user1@example.com',
         product_id: 'product3', 
         product_name: 'Gaming Keyboard RGB',
         refund_status: false,
         purchase_amount: 149.99,
         purchase_date: '2025-10-09',
         refund_date: null,
-        refund_amount: 0
+        refund_amount: 0,
+        payment_method: 'credit_card',
+        status: 'completed'
     },
     { 
         transaction_id: 'txn126', 
         user_id: 'user2',
+        username: 'user2',
+        email: 'user2@example.com',
         product_id: 'product4', 
         product_name: 'Bluetooth Speaker',
         refund_status: true,
         purchase_amount: 79.99,
         purchase_date: '2025-10-12',
         refund_date: '2025-10-14',
-        refund_amount: 79.99
+        refund_amount: 79.99,
+        payment_method: 'debit_card',
+        status: 'refunded'
+    },
+    { 
+        transaction_id: 'txn127', 
+        user_id: 'user1',
+        username: 'user1',
+        email: 'user1@example.com',
+        product_id: 'product5', 
+        product_name: 'Wireless Mouse',
+        refund_status: false,
+        purchase_amount: 59.99,
+        purchase_date: '2025-10-16',
+        refund_date: null,
+        refund_amount: 0,
+        payment_method: 'credit_card',
+        status: 'completed'
     }
 ];
 

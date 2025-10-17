@@ -1,0 +1,157 @@
+.transaction-history {
+    padding: 20px;
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.transaction-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.filter-controls select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+.transaction-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.transaction-table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table th {
+    background: #f8f9fa;
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.transaction-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-table tr:hover {
+    background: #f8f9fa;
+}
+
+.transaction-id {
+    font-family: monospace;
+    font-size: 12px;
+    color: #666;
+}
+
+.user-info {
+    line-height: 1.4;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #666;
+}
+
+.product-name {
+    font-weight: 500;
+}
+
+.amount {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.payment-method {
+    text-transform: capitalize;
+    font-size: 14px;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-refunded {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.refund-info {
+    line-height: 1.4;
+}
+
+.refund-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.no-refund {
+    color: #999;
+    font-style: italic;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.error {
+    color: #dc3545;
+}
