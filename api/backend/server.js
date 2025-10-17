@@ -14,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
 
 // CORS configuration for both development and production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'PRODUCTION' 
     ? [
         'https://assessment-crwd.onrender.com', // Replace with your actual Vercel URL
         'https://crwd-jiawei.vercel.app' // Add your actual frontend URL here
@@ -160,7 +160,7 @@ app.use('*', (req, res) => {
 
 // Only start server in development mode
 // In production (Vercel), this will be handled by the serverless function
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'PRODUCTION') {
   const port = process.env.PORT || 5000;
   app.listen(port, () => {
     console.log(`🚀 CRWD Backend Server running on http://localhost:${port}`);

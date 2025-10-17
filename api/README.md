@@ -404,7 +404,7 @@ Import the API collection from `/docs/postman-collection.json` (if available).
 
 ### Environment Setup:
 - Development: `NODE_ENV=development`
-- Production: `NODE_ENV=production`
+- Production: `NODE_ENV=PRODUCTION`
 - Testing: `NODE_ENV=test`
 
 ## 🤝 Contributing
